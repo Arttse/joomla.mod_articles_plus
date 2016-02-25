@@ -1,0 +1,24 @@
+{
+  "name": "joomla.mod_articles_plus",
+  "version": "0.0.0",
+  "description": "Joomla module. Displays articles with filtration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arttse/joomla.mod_articles_plus.git"
+  },
+  "author": "Nikita «Arttse» Bystrov",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Arttse/joomla.mod_articles_plus/issues"
+  },
+  "homepage": "https://github.com/Arttse/joomla.mod_articles_plus#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-zip": "^3.0.2",
+    "xml2json": "^0.9.0"
+  }
+}
