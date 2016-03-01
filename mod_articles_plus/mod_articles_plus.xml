@@ -32,6 +32,30 @@
 
             <fieldset name="basic">
 
+                <field
+                    name="cat_ids"
+                    type="category"
+                    extension="com_content"
+                    multiple="true"
+                    default=""
+                    size="10"
+                    label="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_LABEL"
+                    description="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_DESC"/>
+
+                <field name="tag_ids"
+                       type="tag"
+                       label="MOD_ARTICLES_PLUS_PARAM_TAG_IDS_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_TAG_IDS_DESC"
+                       mode="ajax"
+                       class="inputbox small"
+                       multiple="true"/>
+
+                <field name="limit"
+                       type="text"
+                       default="4"
+                       label="MOD_ARTICLES_PLUS_PARAM_LIMIT_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_LIMIT_DESC"
+                       filter="integer"/>
 
             </fieldset>
 
