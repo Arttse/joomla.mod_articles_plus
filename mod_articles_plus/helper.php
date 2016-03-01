@@ -126,52 +126,57 @@ class modArticlesPlusHelper {
             $query->setLimit ( $this->limit );
         }
 
-        /** Filter by categories */
+        /** Filter by Categories */
         if ( count ( $this->cat_ids ) )
         {
-            $where_cat_ids_query = '';
-
-            foreach ( $this->cat_ids as $i => $cat_id )
-            {
-                if ( $i == 0 )
-                {
-                    $where_cat_ids_query = $db->quoteName ( 'a.catid' ) . '=' . $cat_id;
-                }
-                else
-                {
-                    $where_cat_ids_query .= ' OR ' . $db->quoteName ( 'a.catid' ) . '=' . $cat_id;
-                }
-
-            }
-
-            $query->where ( '(' . $where_cat_ids_query . ')' );
+            $query->where ( '(' . $this->_mySqlClause ( $this->cat_ids, $db->quoteName ( 'a.catid' ) ) . ')' );
         }
 
-        /** Filter by tags */
+        /** Filter by Tags */
         if ( count ( $this->tag_ids ) )
         {
-            $where_tag_ids_query = '';
-
-            foreach ( $this->tag_ids as $i => $tag_id )
-            {
-                if ( $i == 0 )
-                {
-                    $where_tag_ids_query = $db->quoteName ( 'b.tag_id' ) . '=' . $tag_id;
-                }
-                else
-                {
-                    $where_tag_ids_query .= ' OR ' . $db->quoteName ( 'b.tag_id' ) . '=' . $tag_id;
-                }
-
-            }
-
-            $query->where ( '(' . $where_tag_ids_query . ')' );
+            $query->where ( '(' . $this->_mySqlClause ( $this->tag_ids, $db->quoteName ( 'b.tag_id' ) ) . ')' );
         }
 
         $db->setQuery ( $query );
 
         return $db->loadObjectList ();
 
+    }
+
+
+    /**
+     * MySQL Clause from array of elements
+     *
+     * @param array  $elements  - elements for compliance with field $where
+     * @param string $where     - field, which will make the appropriate $elements
+     * @param string $operator  - operator, which can be used with clause
+     * @param string $condition - `AND` or `OR`
+     *
+     * @return string
+     */
+    private function _mySqlClause ( array $elements, $where, $operator = '=', $condition = 'OR' )
+    {
+        if ( count ( $elements ) == 0 OR empty( $where ) )
+        {
+            return '';
+        }
+
+        $clause = '';
+
+        foreach ( $elements as $i => $element )
+        {
+            if ( $i == 0 )
+            {
+                $clause = $where . $operator . '\'' . str_replace( '\'', '\\\'', $element ) . '\'';
+            }
+            else
+            {
+                $clause .= ' ' . trim ( $condition ) . ' ' . $where . $operator . '\'' . str_replace( '\'', '\\\'', $element ) . '\'';
+            }
+        }
+
+        return $clause;
     }
 
 }
