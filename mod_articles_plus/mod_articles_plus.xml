@@ -42,6 +42,16 @@
                     label="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_LABEL"
                     description="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_DESC"/>
 
+                <field
+                    name="cat_ids_exception"
+                    type="category"
+                    extension="com_content"
+                    multiple="true"
+                    default=""
+                    size="10"
+                    label="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_EXCEPTION_LABEL"
+                    description="MOD_ARTICLES_PLUS_PARAM_CAT_IDS_EXCEPTION_DESC"/>
+
                 <field name="tag_ids"
                        type="tag"
                        label="MOD_ARTICLES_PLUS_PARAM_TAG_IDS_LABEL"
@@ -49,6 +59,21 @@
                        mode="ajax"
                        class="inputbox small"
                        multiple="true"/>
+
+                <field name="tag_ids_exception"
+                       type="tag"
+                       label="MOD_ARTICLES_PLUS_PARAM_TAG_IDS_EXCEPTION_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_TAG_IDS_EXCEPTION_DESC"
+                       mode="ajax"
+                       class="inputbox small"
+                       multiple="true"/>
+
+                <field name="offset"
+                       type="text"
+                       default="0"
+                       label="MOD_ARTICLES_PLUS_PARAM_OFFSET_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_OFFSET_DESC"
+                       filter="integer"/>
 
                 <field name="limit"
                        type="text"

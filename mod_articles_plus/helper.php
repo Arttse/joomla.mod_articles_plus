@@ -31,11 +31,32 @@ class modArticlesPlusHelper {
     public $cat_ids;
 
     /**
+     * Categories exception
+     *
+     * @var array
+     */
+    public $cat_ids_exception;
+
+    /**
      * Tags
      *
      * @var array
      */
     public $tag_ids;
+
+    /**
+     * Tags exception
+     *
+     * @var array
+     */
+    public $tag_ids_exception;
+
+    /**
+     * Offset of items
+     *
+     * @var int
+     */
+    public $offset;
 
     /**
      * Limit of items
@@ -45,7 +66,8 @@ class modArticlesPlusHelper {
     public $limit;
 
     /**
-     * Select fields
+     * Select fields.
+     * Required fields 'a.id' and 'a.catid'
      *
      * @var array
      */
@@ -88,8 +110,16 @@ class modArticlesPlusHelper {
         $this->module = $module;
         $this->params = $params;
 
+        // Filters
         $this->cat_ids = (array)$params->get ( 'cat_ids', [ ] );
         $this->tag_ids = (array)$params->get ( 'tag_ids', [ ] );
+
+        // Exceptions
+        $this->cat_ids_exception = (array)$params->get ( 'cat_ids_exception', [ ] );
+        $this->tag_ids_exception = (array)$params->get ( 'tag_ids_exception', [ ] );
+
+        // Other
+        $this->offset = (int)$params->get ( 'offset', 0 );
         $this->limit = (int)$params->get ( 'limit', 4 );
     }
 
@@ -99,8 +129,21 @@ class modArticlesPlusHelper {
      *
      * @return array - list of items
      */
-    function getItems ()
+    public function getItems ()
     {
+        /** Check and remove intersecting values in Categories */
+        if ( count ( $this->cat_ids ) AND count ( $this->cat_ids_exception ) )
+        {
+            $this->cat_ids = $this->intersectExclude ( $this->cat_ids, $this->cat_ids_exception );
+        }
+
+        /** Check and remove intersecting values in Tags */
+        if ( count ( $this->tag_ids ) AND count ( $this->tag_ids_exception ) )
+        {
+            $this->tag_ids = $this->intersectExclude ( $this->tag_ids, $this->tag_ids_exception );
+        }
+
+        /** Work with DataBase */
         $db = JFactory::getDbo ();
         $query = $db->getQuery ( true );
 
@@ -120,10 +163,10 @@ class modArticlesPlusHelper {
                 ' ON (' . $db->quoteName ( 'a.id' ) . ' = ' . $db->quoteName ( 'b.content_item_id' ) . ')'
             );
 
-        /** Set a limit */
+        /** Set a limit with offset */
         if ( $this->limit )
         {
-            $query->setLimit ( $this->limit );
+            $query->setLimit ( $this->limit, $this->offset );
         }
 
         /** Filter by Categories */
@@ -132,16 +175,46 @@ class modArticlesPlusHelper {
             $query->where ( '(' . $this->_mySqlClause ( $this->cat_ids, $db->quoteName ( 'a.catid' ) ) . ')' );
         }
 
+        /** Filter exception by Categories */
+        if ( count ( $this->cat_ids_exception ) )
+        {
+            $query->where ( '(' . $this->_mySqlClause ( $this->cat_ids_exception, $db->quoteName ( 'a.catid' ), '!=', 'AND' ) . ')' );
+        }
+
         /** Filter by Tags */
         if ( count ( $this->tag_ids ) )
         {
             $query->where ( '(' . $this->_mySqlClause ( $this->tag_ids, $db->quoteName ( 'b.tag_id' ) ) . ')' );
         }
 
+        /** Filter exception by Tags */
+        if ( count ( $this->tag_ids_exception ) )
+        {
+            $query->where ( '(' . $this->_mySqlClause ( $this->tag_ids_exception, $db->quoteName ( 'b.tag_id' ), '!=', 'AND' ) . ')' );
+        }
+
         $db->setQuery ( $query );
 
         return $db->loadObjectList ();
+    }
 
+
+    /**
+     * Checks for intersecting values and removes them from the main array
+     *
+     * @param array $main       - the array with master values to check.
+     * @param array $comparable - an array to compare values against.
+     *
+     * @return array - main array with excluded intersecting values
+     */
+    public function intersectExclude ( array $main, array $comparable )
+    {
+        foreach ( array_intersect ( $main, $comparable ) as $k => $v )
+        {
+            unset( $main[$k] );
+        }
+
+        return array_values ( $main );
     }
 
 
@@ -166,13 +239,15 @@ class modArticlesPlusHelper {
 
         foreach ( $elements as $i => $element )
         {
+            $element = '\'' . str_replace ( '\'', '\\\'', $element ) . '\'';
+
             if ( $i == 0 )
             {
-                $clause = $where . $operator . '\'' . str_replace( '\'', '\\\'', $element ) . '\'';
+                $clause = $where . $operator . $element;
             }
             else
             {
-                $clause .= ' ' . trim ( $condition ) . ' ' . $where . $operator . '\'' . str_replace( '\'', '\\\'', $element ) . '\'';
+                $clause .= ' ' . trim ( $condition ) . ' ' . $where . $operator . $element;
             }
         }
 

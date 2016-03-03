@@ -8,3 +8,6 @@
 defined ( '_JEXEC' ) or die;
 
 // $h = $helper
+
+/** @var null|array - List of Articles */
+$items = $h->getItems ();
