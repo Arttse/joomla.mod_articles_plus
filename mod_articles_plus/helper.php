@@ -52,6 +52,13 @@ class modArticlesPlusHelper {
     public $tag_ids_exception;
 
     /**
+     * Status of articles
+     *
+     * @var array
+     */
+    public $status;
+
+    /**
      * Offset of items
      *
      * @var int
@@ -66,8 +73,22 @@ class modArticlesPlusHelper {
     public $limit;
 
     /**
+     * Order by
+     *
+     * @var string
+     */
+    public $order;
+
+    /**
+     * Direction. ASC|DESC
+     *
+     * @var string
+     */
+    public $direction;
+
+    /**
      * Select fields.
-     * Required fields 'a.id' and 'a.catid'
+     * Required fields 'a.id', 'a.catid', 'a.state'
      *
      * @var array
      */
@@ -113,6 +134,7 @@ class modArticlesPlusHelper {
         // Filters
         $this->cat_ids = (array)$params->get ( 'cat_ids', [ ] );
         $this->tag_ids = (array)$params->get ( 'tag_ids', [ ] );
+        $this->status = (array)$params->get ( 'status', [ ] );
 
         // Exceptions
         $this->cat_ids_exception = (array)$params->get ( 'cat_ids_exception', [ ] );
@@ -121,6 +143,8 @@ class modArticlesPlusHelper {
         // Other
         $this->offset = (int)$params->get ( 'offset', 0 );
         $this->limit = (int)$params->get ( 'limit', 4 );
+        $this->order = (string)$params->get( 'order', 'a.publish_up' );
+        $this->direction = (string)$params->get( 'direction', 'DESC' );
     }
 
 
@@ -151,7 +175,7 @@ class modArticlesPlusHelper {
         $query
             ->select ( $db->quoteName ( $this->select_fields ) )
             ->from ( $db->quoteName ( '#__content', 'a' ) )
-            ->order ( $db->quoteName ( 'a.created' ) . ' DESC' )
+            ->order ( ( $this->order == 'random' ? 'RAND()' : $db->quoteName ( $this->order ) . ' ' . $this->direction ) )
             ->group ( $db->quoteName ( 'a.id' ) );
 
         /** Additional query for tags */
@@ -164,7 +188,11 @@ class modArticlesPlusHelper {
             );
 
         /** Set a limit with offset */
-        if ( $this->limit )
+        if ( $this->limit <= 0 AND $this->offset )
+        {
+            $query->setLimit( 9223372036854775807, $this->offset );
+        }
+        elseif ( $this->limit > 0 )
         {
             $query->setLimit ( $this->limit, $this->offset );
         }
@@ -191,6 +219,12 @@ class modArticlesPlusHelper {
         if ( count ( $this->tag_ids_exception ) )
         {
             $query->where ( '(' . $this->_mySqlClause ( $this->tag_ids_exception, $db->quoteName ( 'b.tag_id' ), '!=', 'AND' ) . ')' );
+        }
+
+        /** Filter by Status (state) */
+        if ( count ( $this->status ) > 0 AND count ( $this->status ) < 4 )
+        {
+            $query->where ( '(' . $this->_mySqlClause ( $this->status, $db->quoteName ( 'a.state' ) ) . ')' );
         }
 
         $db->setQuery ( $query );

@@ -68,6 +68,19 @@
                        class="inputbox small"
                        multiple="true"/>
 
+                <field name="status"
+                       type="list"
+                       default="1"
+                       label="MOD_ARTICLES_PLUS_PARAM_STATE_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_STATE_DESC"
+                       multiple="true"
+                >
+                    <option value="-2">JTRASHED</option>
+                    <option value="0">JUNPUBLISHED</option>
+                    <option value="1">JPUBLISHED</option>
+                    <option value="2">JARCHIVED</option>
+                </field>
+
                 <field name="offset"
                        type="text"
                        default="0"
@@ -81,6 +94,29 @@
                        label="MOD_ARTICLES_PLUS_PARAM_LIMIT_LABEL"
                        description="MOD_ARTICLES_PLUS_PARAM_LIMIT_DESC"
                        filter="integer"/>
+
+                <field name="order"
+                       type="list"
+                       default="a.publish_up"
+                       label="MOD_ARTICLES_PLUS_PARAM_ORDER_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_ORDER_DESC"
+                >
+                    <option value="a.publish_up">MOD_ARTICLES_PLUS_OPTION_PUBLISH_UP</option>
+                    <option value="a.created">MOD_ARTICLES_PLUS_OPTION_CREATED</option>
+                    <option value="a.ordering">MOD_ARTICLES_PLUS_OPTION_ORDERING</option>
+                    <option value="a.hits">MOD_ARTICLES_PLUS_OPTION_HITS</option>
+                    <option value="random">MOD_ARTICLES_PLUS_OPTION_RANDOM</option>
+                </field>
+
+                <field name="direction"
+                       type="list"
+                       default="DESC"
+                       label="MOD_ARTICLES_PLUS_PARAM_DIRECTION_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_DIRECTION_DESC"
+                >
+                    <option value="ASC">MOD_ARTICLES_PLUS_OPTION_DIRECTION_ASC</option>
+                    <option value="DESC">MOD_ARTICLES_PLUS_OPTION_DIRECTION_DESC</option>
+                </field>
 
             </fieldset>
 
