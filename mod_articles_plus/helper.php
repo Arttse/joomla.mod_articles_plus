@@ -59,6 +59,13 @@ class modArticlesPlusHelper {
     public $status;
 
     /**
+     * Featured
+     *
+     * @var int
+     */
+    public $featured;
+
+    /**
      * Offset of items
      *
      * @var int
@@ -88,7 +95,7 @@ class modArticlesPlusHelper {
 
     /**
      * Select fields.
-     * Required fields 'a.id', 'a.catid', 'a.state'
+     * Required fields 'a.id', 'a.catid', 'a.state', 'a.featured'
      *
      * @var array
      */
@@ -135,6 +142,7 @@ class modArticlesPlusHelper {
         $this->cat_ids = (array)$params->get ( 'cat_ids', [ ] );
         $this->tag_ids = (array)$params->get ( 'tag_ids', [ ] );
         $this->status = (array)$params->get ( 'status', [ ] );
+        $this->featured = (int)$params->get ( 'featured', 0 );
 
         // Exceptions
         $this->cat_ids_exception = (array)$params->get ( 'cat_ids_exception', [ ] );
@@ -143,8 +151,8 @@ class modArticlesPlusHelper {
         // Other
         $this->offset = (int)$params->get ( 'offset', 0 );
         $this->limit = (int)$params->get ( 'limit', 4 );
-        $this->order = (string)$params->get( 'order', 'a.publish_up' );
-        $this->direction = (string)$params->get( 'direction', 'DESC' );
+        $this->order = (string)$params->get ( 'order', 'a.publish_up' );
+        $this->direction = (string)$params->get ( 'direction', 'DESC' );
     }
 
 
@@ -190,7 +198,7 @@ class modArticlesPlusHelper {
         /** Set a limit with offset */
         if ( $this->limit <= 0 AND $this->offset )
         {
-            $query->setLimit( 9223372036854775807, $this->offset );
+            $query->setLimit ( 9223372036854775807, $this->offset );
         }
         elseif ( $this->limit > 0 )
         {
@@ -225,6 +233,19 @@ class modArticlesPlusHelper {
         if ( count ( $this->status ) > 0 AND count ( $this->status ) < 4 )
         {
             $query->where ( '(' . $this->_mySqlClause ( $this->status, $db->quoteName ( 'a.state' ) ) . ')' );
+        }
+
+        /** Filter by featured */
+        if ( (bool)$this->featured )
+        {
+            if ( $this->featured === 1 )
+            {
+                $query->where ( '(' . $db->quoteName ( 'a.featured' ) . ' != \'1\')' );
+            }
+            elseif ( $this->featured === 2 )
+            {
+                $query->where ( '(' . $db->quoteName ( 'a.featured' ) . ' = \'1\')' );
+            }
         }
 
         $db->setQuery ( $query );

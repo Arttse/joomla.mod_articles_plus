@@ -2,7 +2,7 @@
 <extension type="module" client="site" version="3.2" method="upgrade">
 
     <name>Articles plus</name>
-    <creationDate>February 2016</creationDate>
+    <creationDate>March 2016</creationDate>
     <author>Nikita «Arttse» Bystrov</author>
     <authorEmail>arttsesoft@gmail.com</authorEmail>
 
@@ -79,6 +79,17 @@
                     <option value="0">JUNPUBLISHED</option>
                     <option value="1">JPUBLISHED</option>
                     <option value="2">JARCHIVED</option>
+                </field>
+
+                <field name="featured"
+                       type="list"
+                       default="0"
+                       label="MOD_ARTICLES_PLUS_PARAM_FEATURED_LABEL"
+                       description="MOD_ARTICLES_PLUS_PARAM_FEATURED_DESC"
+                >
+                    <option value="0">MOD_ARTICLES_PLUS_OPTION_SHOW</option>
+                    <option value="1">MOD_ARTICLES_PLUS_OPTION_HIDE</option>
+                    <option value="2">MOD_ARTICLES_PLUS_OPTION_SHOW_ONLY_FEATURED</option>
                 </field>
 
                 <field name="offset"
