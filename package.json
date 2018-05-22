@@ -4,6 +4,8 @@
   "description": "Joomla module. Displays articles with filtration",
   "private": true,
   "scripts": {
+    "lint:es": "eslint .",
+    "test": "npm run lint:es",
     "pack": "gulp create.installer"
   },
   "engines": {
@@ -20,6 +22,12 @@
   },
   "homepage": "https://github.com/Arttse/joomla.mod_articles_plus#readme",
   "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
     "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "gulp-zip": "^4.1.0",
