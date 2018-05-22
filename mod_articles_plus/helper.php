@@ -250,7 +250,19 @@ class modArticlesPlusHelper {
 
     $db->setQuery ( $query );
 
-    return $db->loadObjectList ();
+    $items = $db->loadObjectList ();
+
+    /** Fields introduced in Joomla since 3.7.0 */
+    if ( class_exists ( 'FieldsHelper' ) )
+    {
+      foreach ( $items as &$item )
+      {
+        $item->jcfields = FieldsHelper::getFields ( 'com_content.article', $item, true );
+      }
+      unset( $item );
+    }
+
+    return $items;
   }
 
 
