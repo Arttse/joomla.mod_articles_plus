@@ -5,17 +5,12 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
+indent_size = 2
 indent_style = space
-insert_final_newline = false
+insert_final_newline = true
 trim_trailing_whitespace = true
 
-[{**.js,**.php,**.xml}]
-indent_size = 4
-
-[{**.json,**.yml}]
-indent_size = 2
-
-# Markdown
-[**.md]
-indent_size = 2
+# Markdown and text
+[**.{markdown,mdown,mkdn,mkd,md,txt}]
 trim_trailing_whitespace = false
+insert_final_newline = false
