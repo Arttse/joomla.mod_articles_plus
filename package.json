@@ -1,8 +1,8 @@
 {
   "name": "joomla.mod_articles_plus",
   "version": "0.0.0",
-  "description": "Joomla module. Displays articles with filtration.",
-  "main": "index.js",
+  "description": "Joomla module. Displays articles with filtration",
+  "private": true,
   "scripts": {
     "test": "gulp tests"
   },
