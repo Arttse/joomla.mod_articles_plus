@@ -4,7 +4,10 @@
   "description": "Joomla module. Displays articles with filtration",
   "private": true,
   "scripts": {
-    "test": "gulp tests"
+    "pack": "gulp create.installer"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,7 @@
   "homepage": "https://github.com/Arttse/joomla.mod_articles_plus#readme",
   "devDependencies": {
     "gulp": "^4.0.0",
+    "gulp-cli": "^2.0.1",
     "gulp-zip": "^4.1.0",
     "xml2json": "^0.11.2"
   }
