@@ -2,11 +2,11 @@
 <extension type="module" client="site" version="3.2" method="upgrade">
 
     <name>Articles plus</name>
-    <creationDate>March 2016</creationDate>
+    <creationDate>2018</creationDate>
     <author>Nikita «Arttse» Bystrov</author>
     <authorEmail>arttsesoft@gmail.com</authorEmail>
 
-    <copyright>Copyright (C) 2016 Nikita «Arttse» Bystrov. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2016-2018 Nikita «Arttse» Bystrov. All rights reserved.</copyright>
     <license>License GNU General Public License version 3</license>
     <version>0.1.0-dev</version>
     <description>MOD_ARTICLES_PLUS_DESC</description>
