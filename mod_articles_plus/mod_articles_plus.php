@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright      Copyright (C) 2016-2018 Nikita «Arttse» Bystrov. All rights reserved.
+ * @copyright      Copyright (C) 2016-2018 Nikita Bystrov (Arttse). All rights reserved.
  * @license        License GNU General Public License version 3
- * @author         Nikita «Arttse» Bystrov
+ * @author         Nikita Bystrov (Arttse)
  */
 
 defined ( '_JEXEC' ) or die;
